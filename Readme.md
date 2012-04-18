@@ -26,9 +26,8 @@
 
 **Stop**
 
-> Work is done. Write seconds and project name in $HOME/.watchout/spent.csv
+> Work is done. Write spent time and project name in $HOME/.watchout/spent.csv
 
 **Reset**
 
 > Something wrong? Start again!
- 

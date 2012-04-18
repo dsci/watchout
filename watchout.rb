@@ -3,8 +3,6 @@ require 'yaml'
 Shoes.app :width => 240, :height => 300 do
   @seconds = 0
   @paused = true
-  
-
 
   image "statics/IMG_0040.jpg"
 
@@ -16,7 +14,8 @@ Shoes.app :width => 240, :height => 300 do
 
   def write_project(seconds)
     day = Time.now
-    content_line = "#{@project};#{day.day}.#{day.month}.#{day.year};#{seconds}\n"
+    time_spent = sprintf("%02d:%02d:%02d",(seconds / (60*60)),(seconds / 60 % 60),(seconds % 60))
+    content_line = "#{@project};#{day.day}.#{day.month}.#{day.year};#{time_spent}\n"
     File.open("#{Dir.home}/.watchout/spent.csv", 'a') {|f| f.write(content_line) }
   end
 
