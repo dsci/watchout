@@ -1,0 +1,6 @@
+.DS_Store
+statics/*.jpg
+statics/*.png
+statics/*.jpeg
+statics/*.gif
+*.shy
