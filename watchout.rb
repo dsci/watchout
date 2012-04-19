@@ -1,6 +1,6 @@
 require 'yaml'
 
-Shoes.app :width => 240, :height => 300 do
+Shoes.app :width => 240, :height => 330 do
   @seconds = 0
   @paused = true
 
@@ -13,10 +13,15 @@ Shoes.app :width => 240, :height => 300 do
   @project = projects.first
 
   def write_project(seconds)
-    day = Time.now
-    time_spent = sprintf("%02d:%02d:%02d",(seconds / (60*60)),(seconds / 60 % 60),(seconds % 60))
-    content_line = "#{@project};#{day.day}.#{day.month}.#{day.year};#{time_spent}\n"
-    File.open("#{Dir.home}/.watchout/spent.csv", 'a') {|f| f.write(content_line) }
+    begin 
+      day = Time.now
+      time_spent = sprintf("%02d:%02d:%02d",(seconds / (60*60)),(seconds / 60 % 60),(seconds % 60))
+      content_line = "#{@project};#{day.day}.#{day.month}.#{day.year};#{time_spent};#{@what_yo_doing.text}\n"
+      File.open("#{Dir.home}/.watchout/spent.csv", 'a') {|f| f.write(content_line) }
+      alert "Spent time written!"
+    rescue
+      alert "Somethin went wrong. Sry. :-("
+    end
   end
 
   list_box :items => projects,:width=>240,:choose => projects.first do |list|
@@ -33,12 +38,21 @@ Shoes.app :width => 240, :height => 300 do
     end
   end
 
+  def init_what_yo_doing_line(str="What are you doing?")
+    @what_yo_doing.text = str
+  end
+
+  @what_yo_doing = edit_line :width => 230   
+  init_what_yo_doing_line
+
   @display = stack :margin => 20
   display_time
 
   button "Start", :width => '25%' do
     @paused = false
     display_time
+    init_what_yo_doing_line("")
+    @what_yo_doing.focus
   end
 
   button "Pause", :width => '25%' do
@@ -49,6 +63,7 @@ Shoes.app :width => 240, :height => 300 do
   button "Stop", :width => '25%' do
     @paused = true
     write_project(@seconds)
+    init_what_yo_doing_line
     @seconds = 0
   end
   
