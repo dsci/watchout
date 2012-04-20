@@ -4,6 +4,8 @@ Shoes.app :width => 240, :height => 330 do
   @seconds = 0
   @paused = true
 
+  @what_yo_doing_text = "What are you doing?"
+
   image "statics/IMG_0040.jpg"
 
   def projects
@@ -38,7 +40,8 @@ Shoes.app :width => 240, :height => 330 do
     end
   end
 
-  def init_what_yo_doing_line(str="What are you doing?")
+  def init_what_yo_doing_line(str=nil)
+    str = @what_yo_doing_text if str.nil?
     @what_yo_doing.text = str
   end
 
@@ -51,7 +54,9 @@ Shoes.app :width => 240, :height => 330 do
   button "Start", :width => '25%' do
     @paused = false
     display_time
-    init_what_yo_doing_line("")
+    if @what_yo_doing.text.eql?(@what_yo_doing_text)
+      init_what_yo_doing_line("")
+    end
     @what_yo_doing.focus
   end
 
